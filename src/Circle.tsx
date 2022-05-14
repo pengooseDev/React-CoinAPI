@@ -46,7 +46,6 @@ function Circle({ bgColor, borderColor }: CircleProps) {
         </Container>
     );
 }
-
 interface ContainerProps {
     containerBgColor: string;
     containerBorderColor?: string;
