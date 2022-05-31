@@ -1,6 +1,4 @@
-import React from "react";
-import styled, { createGlobalStyle } from "styled-components";
-import Router from "Router";
+import { createGlobalStyle } from "styled-components";
 
 //styled-components는 resetCSS와 같이 global하게 적용시킬 CSS에 대한 property를 제공함. 'createGlobalStyle'
 
@@ -73,7 +71,6 @@ const App = () => {
     return (
         <>
             <GlobalStyle />
-            <Router />
         </>
     );
 };
