@@ -47,6 +47,21 @@ interface CoinInterface {
     type: string;
 }
 
+const CoinWrapper = styled.div`
+    display: flex;
+    align-items: center;
+`;
+
+const Loader = styled.div`
+    text-align: center;
+`;
+
+const CoinImg = styled.img`
+    width: 15px;
+    height: 15px;
+    margin-right: 10px;
+`;
+
 const Coins = () => {
     const [coins, setCoin] = React.useState<CoinInterface[]>([]);
     const [loading, setLoading] = React.useState(true);
@@ -63,10 +78,6 @@ const Coins = () => {
         })();
     }, []);
 
-    const Loader = styled.div`
-        text-align: center;
-    `;
-
     return (
         <>
             <Container>
@@ -79,7 +90,24 @@ const Coins = () => {
                     <CoinList>
                         {coins.map((i) => (
                             <Coin key={i.id}>
-                                <Link to={`/${i.id}`}>{i.name} &rarr;</Link>
+                                <Link
+                                    to={{
+                                        pathname: `/${i.id}`,
+                                    }}
+                                    state={{
+                                        name: i.name,
+                                    }}
+                                >
+                                    <CoinWrapper>
+                                        <CoinImg
+                                            src={`https://raw.githubusercontent.com/ErikThiart/cryptocurrency-icons/master/16/${i.name
+                                                .toLowerCase()
+                                                .split(" ")
+                                                .join("-")}.png`}
+                                        />
+                                        {i.name} &rarr;
+                                    </CoinWrapper>
+                                </Link>
                             </Coin>
                         ))}
                     </CoinList>
