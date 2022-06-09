@@ -1,7 +1,14 @@
 import React from "react";
 import styled from "styled-components";
 //query에 params를 잡아내기 위해선 아래의 것을 사용.
-import { Routes, Route, useParams, useLocation, Link } from "react-router-dom";
+import {
+    useMatch,
+    Routes,
+    Route,
+    useParams,
+    useLocation,
+    Link,
+} from "react-router-dom";
 //params에서 object를 return함.
 //key값은 react-router-dom의 Route에서 정한, path "/:이름"으로 옴.
 import Chart from "./Chart";
@@ -70,6 +77,7 @@ const Footer = styled.div`
         border-radius: 3px;
         background: rgba(0, 0, 0, 0.3);
         transition: 0.2s ease-in-out;
+
         :hover {
             background: rgba(0, 0, 0, 0.6);
             color: white;
@@ -77,6 +85,35 @@ const Footer = styled.div`
         }
     }
 `;
+
+const Tabs = styled.div`
+    display: flex;
+    justify-content: space-around;
+    margin: 20px;
+`;
+
+const Tab = styled.div<{ isActive: boolean }>`
+    background: ${(props) =>
+        props.isActive ? props.theme.accentColor : "rgba(0,0,0,0.3)"};
+    color: ${(props) =>
+        props.isActive ? "rgba(0,0,0,0.8)" : props.theme.accentColor};
+
+    transition: 0.2s ease-in-out;
+    font-weight: 600;
+    border-radius: 3px;
+
+    :hover {
+        background: rgba(0, 0, 0, 0.6);
+        color: ${(props) => props.theme.accentColor};
+        cursor: pointer;
+    }
+
+    & a {
+        display: block;
+        padding: 10px 70px;
+    }
+`;
+
 interface nameState {
     name: string;
 }
@@ -142,11 +179,14 @@ interface PriceData {
 
 const Coin = () => {
     const [loading, setLoading] = React.useState(true);
+    //파라미터 정보 가져오기.
     const { coinId } = useParams<keyof RouteParams>() as RouteParams; //const { coinId } = useParams<{coinId: string}>()
     //Route의 Link에서 State받아오기는 useLocation 사용. 이해 안되면 useLocation() 콘솔 찍어보기.
     const { state } = useLocation() as RouteState;
     const [info, setInfo] = React.useState<InfoData>();
     const [priceInfo, setPriceInfo] = React.useState<PriceData>();
+    const priceMatch = useMatch("/:coinId/price");
+    const chartMatch = useMatch("/:coinId/chart");
 
     React.useEffect(() => {
         (async () => {
@@ -168,7 +208,11 @@ const Coin = () => {
         <Container>
             <Header>
                 <Title>
-                    {state ? state.name : <Link to={"/"}>Home &rarr;</Link>}
+                    {state?.name
+                        ? state.name
+                        : loading
+                        ? "Loading..."
+                        : info?.name}
                 </Title>
             </Header>
             {loading ? (
@@ -200,6 +244,16 @@ const Coin = () => {
                             <span>{priceInfo?.max_supply}</span>
                         </OverviewItem>
                     </Overview>
+
+                    <Tabs>
+                        <Tab isActive={chartMatch ? true : false}>
+                            <Link to={"chart"}>Chart</Link>
+                        </Tab>
+                        <Tab isActive={priceMatch ? true : false}>
+                            <Link to={"price"}> Price </Link>
+                        </Tab>
+                    </Tabs>
+
                     <Footer>
                         <Link to={"/"}>Home &rarr;</Link>
                     </Footer>

@@ -21,7 +21,6 @@ const Coin = styled.li`
     background: white;
     color: ${(props) => props.theme.bgColor};
     margin-bottom: 10px;
-    padding: 20px;
     border-radius: 5px;
     font-weight: 600;
     transition: 0.2s ease-in-out;
@@ -29,6 +28,10 @@ const Coin = styled.li`
         background: rgba(0, 0, 0, 0.2);
         color: ${(props) => props.theme.accentColor};
         cursor: pointer;
+    }
+    & a {
+        display: block;
+        padding: 20px;
     }
 `;
 
