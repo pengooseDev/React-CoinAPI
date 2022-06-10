@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom";
 import styled from "styled-components";
-import React from "react";
+import { useQuery } from "react-query";
+import { fetchCoins } from "api";
 
 const Container = styled.div`
     padding: 0 20px;
@@ -40,7 +41,7 @@ const Title = styled.div`
     color: ${(props) => props.theme.accentColor};
 `;
 
-interface CoinInterface {
+interface ICoin {
     id: string;
     name: string;
     symbol: string;
@@ -66,32 +67,20 @@ const CoinImg = styled.img`
 `;
 
 const Coins = () => {
-    const [coins, setCoin] = React.useState<CoinInterface[]>([]);
-    const [loading, setLoading] = React.useState(true);
-
-    React.useEffect(() => {
-        (async () => {
-            const response = await fetch(
-                "https://api.coinpaprika.com/v1/coins"
-            );
-            const json = await response.json();
-            const coinData = [...json.slice(0, 100)];
-            setCoin(coinData);
-            setLoading(false);
-        })();
-    }, []);
-
+    //react-query
+    //const { 로딩여부, return 데이터 } = useQuery("unique key값", 사용할 함수promise를 return해야함.);
+    const { isLoading, data } = useQuery<ICoin[]>("allCoins", fetchCoins);
     return (
         <>
             <Container>
                 <Header>
                     <Title>Coins</Title>
                 </Header>
-                {loading ? (
+                {isLoading ? (
                     <Loader>Loading...</Loader>
                 ) : (
                     <CoinList>
-                        {coins.map((i) => (
+                        {data?.map((i) => (
                             <Coin key={i.id}>
                                 <Link
                                     to={{
