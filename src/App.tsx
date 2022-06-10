@@ -1,5 +1,7 @@
 import { createGlobalStyle } from "styled-components";
 import Router from "./Router";
+//React Query의 데이터를 보기위해선 devtools버젼으로 Import후 라우터 아래 컴포넌트 넣어주기.
+import { ReactQueryDevtools } from "react-query/devtools";
 
 //createGlobalStyle는 전역적으로 styleComponents를 설정해줄 때 사용.
 //SelfClosingTag로 사용하며, 아래있는 Components를 globalScope로 Style관리.
@@ -89,6 +91,7 @@ const App = () => {
         <>
             <GlobalStyle />
             <Router />
+            <ReactQueryDevtools initialIsOpen={true} />
         </>
     );
 };

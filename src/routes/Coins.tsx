@@ -70,6 +70,7 @@ const Coins = () => {
     //react-query
     //const { 로딩여부, return 데이터 } = useQuery("unique key값", 사용할 함수promise를 return해야함.);
     const { isLoading, data } = useQuery<ICoin[]>("allCoins", fetchCoins);
+    console.log(isLoading, data);
     return (
         <>
             <Container>
