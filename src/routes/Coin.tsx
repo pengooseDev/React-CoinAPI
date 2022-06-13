@@ -103,6 +103,7 @@ const Tab = styled.div<{ isActive: boolean }>`
     transition: 0.2s ease-in-out;
     font-weight: 600;
     border-radius: 3px;
+    margin-bottom: 5px;
 
     :hover {
         background: rgba(0, 0, 0, 0.6);
@@ -249,10 +250,8 @@ const Coin = () => {
                             <Link to={"price"}> Price </Link>
                         </Tab>
                     </Tabs>
+                    <hr></hr>
 
-                    <Footer>
-                        <Link to={"/"}>Home &rarr;</Link>
-                    </Footer>
                     <Routes>
                         <Route
                             path={`chart`}
@@ -260,6 +259,9 @@ const Coin = () => {
                         />
                         <Route path={`price`} element={<Price />} />
                     </Routes>
+                    <Footer>
+                        <Link to={"/"}>Home &rarr;</Link>
+                    </Footer>
                 </>
             )}
         </Container>
