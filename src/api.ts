@@ -1,5 +1,15 @@
-export const fetchCoins = async () => {
-    return fetch(`https://api.coinpaprika.com/v1/coins/`)
+const BASE_URL = "https://api.coinpaprika.com/v1";
+
+export const fetchCoins = () => {
+    return fetch(`${BASE_URL}/coins/`)
         .then((res) => res.json())
         .then((res) => res.slice(0, 100));
+};
+
+export const fetchCoinInfo = (coinId: string) => {
+    return fetch(`${BASE_URL}/coins/${coinId}`).then((res) => res.json());
+};
+
+export const fetchCoinTickers = (coinId: string) => {
+    return fetch(`${BASE_URL}/tickers/${coinId}`).then((res) => res.json());
 };

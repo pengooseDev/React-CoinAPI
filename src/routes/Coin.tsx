@@ -13,6 +13,8 @@ import {
 //key값은 react-router-dom의 Route에서 정한, path "/:이름"으로 옴.
 import Chart from "./Chart";
 import Price from "./Price";
+import { useQuery } from "react-query";
+import { fetchCoinInfo, fetchCoinTickers } from "../api";
 
 interface RouteParams {
     coinId: string;
@@ -177,32 +179,26 @@ interface PriceData {
     };
 }
 
+//React Query는 단순히 Fetch뿐 아니라, Key값을 입력해줄 경우, 데이터 캐싱까지 진행.
 const Coin = () => {
-    const [loading, setLoading] = React.useState(true);
     //파라미터 정보 가져오기.
     const { coinId } = useParams<keyof RouteParams>() as RouteParams; //const { coinId } = useParams<{coinId: string}>()
     //Route의 Link에서 State받아오기는 useLocation 사용. 이해 안되면 useLocation() 콘솔 찍어보기.
     const { state } = useLocation() as RouteState;
-    const [info, setInfo] = React.useState<InfoData>();
-    const [priceInfo, setPriceInfo] = React.useState<PriceData>();
     const priceMatch = useMatch("/:coinId/price");
     const chartMatch = useMatch("/:coinId/chart");
 
-    React.useEffect(() => {
-        (async () => {
-            const infoData = await (
-                await fetch(`https://api.coinpaprika.com/v1/coins/${coinId}`)
-            ).json();
+    const { isLoading: infoLoading, data: infoData } = useQuery<InfoData>(
+        ["info", coinId],
+        () => fetchCoinInfo(coinId)
+    );
 
-            const priceData = await (
-                await fetch(`https://api.coinpaprika.com/v1/tickers/${coinId}`)
-            ).json();
+    const { isLoading: tickersLoading, data: tickersData } =
+        useQuery<PriceData>(["tickers", coinId], () =>
+            fetchCoinTickers(coinId)
+        );
 
-            setInfo(infoData);
-            setPriceInfo(priceData);
-            setLoading(false);
-        })();
-    }, [coinId]);
+    const loading = infoLoading || tickersLoading;
 
     return (
         <Container>
@@ -212,7 +208,7 @@ const Coin = () => {
                         ? state.name
                         : loading
                         ? "Loading..."
-                        : info?.name}
+                        : infoData?.name}
                 </Title>
             </Header>
             {loading ? (
@@ -222,26 +218,26 @@ const Coin = () => {
                     <Overview>
                         <OverviewItem>
                             <span>Rank:</span>
-                            <span>{info?.rank}</span>
+                            <span>{infoData?.rank}</span>
                         </OverviewItem>
                         <OverviewItem>
                             <span>Symbol:</span>
-                            <span>${info?.symbol}</span>
+                            <span>${infoData?.symbol}</span>
                         </OverviewItem>
                         <OverviewItem>
                             <span>Open Source:</span>
-                            <span>{info?.open_source ? "Yes" : "No"}</span>
+                            <span>{infoData?.open_source ? "Yes" : "No"}</span>
                         </OverviewItem>
                     </Overview>
-                    <Description>{info?.description}</Description>
+                    <Description>{infoData?.description}</Description>
                     <Overview>
                         <OverviewItem>
                             <span>Total Suply:</span>
-                            <span>{priceInfo?.total_supply}</span>
+                            <span>{tickersData?.total_supply}</span>
                         </OverviewItem>
                         <OverviewItem>
                             <span>Max Supply:</span>
-                            <span>{priceInfo?.max_supply}</span>
+                            <span>{tickersData?.max_supply}</span>
                         </OverviewItem>
                     </Overview>
 
@@ -258,7 +254,10 @@ const Coin = () => {
                         <Link to={"/"}>Home &rarr;</Link>
                     </Footer>
                     <Routes>
-                        <Route path={`chart`} element={<Chart />} />
+                        <Route
+                            path={`chart`}
+                            element={<Chart coinId={coinId} />}
+                        />
                         <Route path={`price`} element={<Price />} />
                     </Routes>
                 </>
