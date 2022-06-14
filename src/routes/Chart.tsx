@@ -30,8 +30,10 @@ const ChartTitle = styled.div`
 `;
 
 const Chart = ({ coinId }: ChartProps) => {
-    const { isLoading, data } = useQuery<IHistorical[]>(["ohlcv", coinId], () =>
-        fetchCoinHistory(coinId)
+    const { isLoading, data } = useQuery<IHistorical[]>(
+        ["ohlcv", coinId],
+        () => fetchCoinHistory(coinId),
+        { refetchInterval: 4000 }
     );
 
     return (
@@ -72,6 +74,11 @@ const Chart = ({ coinId }: ChartProps) => {
                             String(Math.ceil(Number(i.time_open) / 1000))
                         ) as string[],
                         stroke: { curve: "smooth", width: 3 },
+                        tooltip: {
+                            y: {
+                                formatter: (i) => `$${i.toFixed(3)}`,
+                            },
+                        },
                     }}
                 />
             )}

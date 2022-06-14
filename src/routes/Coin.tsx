@@ -15,6 +15,7 @@ import Chart from "./Chart";
 import Price from "./Price";
 import { useQuery } from "react-query";
 import { fetchCoinInfo, fetchCoinTickers } from "../api";
+import { Helmet } from "react-helmet";
 
 interface RouteParams {
     coinId: string;
@@ -195,14 +196,25 @@ const Coin = () => {
     );
 
     const { isLoading: tickersLoading, data: tickersData } =
-        useQuery<PriceData>(["tickers", coinId], () =>
-            fetchCoinTickers(coinId)
+        useQuery<PriceData>(
+            ["tickers", coinId],
+            () => fetchCoinTickers(coinId),
+            { refetchInterval: 4000 } //3번째 Arg는 주기적으로 refetch하는 것임.
         );
 
     const loading = infoLoading || tickersLoading;
 
     return (
         <Container>
+            <Helmet>
+                <title>
+                    {state?.name
+                        ? state.name
+                        : loading
+                        ? "Loading..."
+                        : infoData?.name}
+                </title>
+            </Helmet>
             <Header>
                 <Title>
                     {state?.name
@@ -226,8 +238,10 @@ const Coin = () => {
                             <span>${infoData?.symbol}</span>
                         </OverviewItem>
                         <OverviewItem>
-                            <span>Open Source:</span>
-                            <span>{infoData?.open_source ? "Yes" : "No"}</span>
+                            <span>Price:</span>
+                            <span>
+                                {tickersData?.quotes.USD.price || "Loading"}
+                            </span>
                         </OverviewItem>
                     </Overview>
                     <Description>{infoData?.description}</Description>

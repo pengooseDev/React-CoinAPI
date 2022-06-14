@@ -2,6 +2,10 @@ import { createGlobalStyle } from "styled-components";
 import Router from "./Router";
 //React Query의 데이터를 보기위해선 devtools버젼으로 Import후 라우터 아래 컴포넌트 넣어주기.
 import { ReactQueryDevtools } from "react-query/devtools";
+import { ThemeProvider } from "styled-components";
+import { darkTheme, lightTheme } from "theme";
+import React from "react";
+import styled from "styled-components";
 
 //createGlobalStyle는 전역적으로 styleComponents를 설정해줄 때 사용.
 //SelfClosingTag로 사용하며, 아래있는 Components를 globalScope로 Style관리.
@@ -82,16 +86,41 @@ a{
 * {
     box-sizing: border-box;
 }
+`;
 
+const ThemeToggleBtn = styled.div`
+    background: white;
+    color: black;
+    display: inline;
+    padding: 10px;
+    border-radius: 3px;
+    font-weight: 600;
+    font-size: 20px;
+    cursor: pointer;
+    transition: 0.2s ease-in-out;
 
+    :hover {
+        background: rgba(0, 0, 0, 0.6);
+        color: whitesmoke;
+    }
 `;
 
 const App = () => {
+    const [isDarkTheme, setDarkTheme] = React.useState<boolean>(true);
+    const themeToggleHandler = () => {
+        setDarkTheme((prev) => !prev);
+    };
+
     return (
         <>
-            <GlobalStyle />
-            <Router />
-            <ReactQueryDevtools initialIsOpen={true} />
+            <ThemeProvider theme={isDarkTheme ? darkTheme : lightTheme}>
+                <ThemeToggleBtn onClick={themeToggleHandler}>
+                    Toggle
+                </ThemeToggleBtn>
+                <GlobalStyle />
+                <Router />
+                <ReactQueryDevtools initialIsOpen={true} />
+            </ThemeProvider>
         </>
     );
 };

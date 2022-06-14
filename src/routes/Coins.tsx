@@ -2,6 +2,7 @@ import { Link } from "react-router-dom";
 import styled from "styled-components";
 import { useQuery } from "react-query";
 import { fetchCoins } from "api";
+import { Helmet } from "react-helmet";
 
 const Container = styled.div`
     padding: 0 20px;
@@ -19,14 +20,14 @@ const Header = styled.header`
 const CoinList = styled.ul``;
 
 const Coin = styled.li`
-    background: white;
-    color: ${(props) => props.theme.bgColor};
+    background: ${(props) => props.theme.cardBgColor};
+    color: ${(props) => props.theme.textColor};
     margin-bottom: 10px;
     border-radius: 5px;
     font-weight: 600;
     transition: 0.2s ease-in-out;
     &:hover {
-        background: rgba(0, 0, 0, 0.2);
+        background: rgba(0, 0, 0, 0.5);
         color: ${(props) => props.theme.accentColor};
         cursor: pointer;
     }
@@ -70,10 +71,12 @@ const Coins = () => {
     //react-query
     //const { 로딩여부, return 데이터 } = useQuery("unique key값", 사용할 함수promise를 return해야함.);
     const { isLoading, data } = useQuery<ICoin[]>("allCoins", fetchCoins);
-    console.log(isLoading, data);
     return (
         <>
             <Container>
+                <Helmet>
+                    <title>Coins</title>
+                </Helmet>
                 <Header>
                     <Title>Coins</Title>
                 </Header>
