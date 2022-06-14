@@ -20,6 +20,7 @@ const GlobalStyle = createGlobalStyle`
 @import url('https://fonts.googleapis.com/css2?family=Source+Sans+Pro:wght@300;400&display=swap');
 
 body{
+    transition: 0.2s ease-in-out;
     font-family: 'Source Sans Pro', sans-serif;
     background: ${(props) => props.theme.bgColor};
     color: ${(props) => props.theme.textColor}; 
@@ -89,13 +90,15 @@ a{
 `;
 
 const ThemeToggleBtn = styled.div`
+    position: fixed;
+    top: -5px;
+    right: 10px;
     background: white;
     color: black;
     display: inline;
     padding: 10px;
     border-radius: 3px;
     font-weight: 600;
-    font-size: 20px;
     cursor: pointer;
     transition: 0.2s ease-in-out;
 
@@ -115,7 +118,7 @@ const App = () => {
         <>
             <ThemeProvider theme={isDarkTheme ? darkTheme : lightTheme}>
                 <ThemeToggleBtn onClick={themeToggleHandler}>
-                    Toggle
+                    {isDarkTheme ? "Light Mode" : "Dark Mode"}
                 </ThemeToggleBtn>
                 <GlobalStyle />
                 <Router />
