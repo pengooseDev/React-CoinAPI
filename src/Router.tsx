@@ -2,6 +2,10 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Coins from "./routes/Coins";
 import Coin from "./routes/Coin";
 
+interface IRouterProps {
+    themeToggleHandler: () => void;
+}
+
 const Router = () => {
     return (
         <BrowserRouter>

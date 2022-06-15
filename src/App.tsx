@@ -6,6 +6,8 @@ import { ThemeProvider } from "styled-components";
 import { darkTheme, lightTheme } from "theme";
 import React from "react";
 import styled from "styled-components";
+import { isDarkAtom } from "./atoms";
+import { useRecoilValue, useSetRecoilState } from "recoil";
 
 //createGlobalStyle는 전역적으로 styleComponents를 설정해줄 때 사용.
 //SelfClosingTag로 사용하며, 아래있는 Components를 globalScope로 Style관리.
@@ -93,6 +95,9 @@ const ThemeToggleBtn = styled.div`
     position: fixed;
     top: -5px;
     right: 10px;
+    width: 150px;
+    height: 40px;
+
     background: white;
     color: black;
     display: inline;
@@ -109,16 +114,17 @@ const ThemeToggleBtn = styled.div`
 `;
 
 const App = () => {
-    const [isDarkTheme, setDarkTheme] = React.useState<boolean>(true);
+    const isDark = useRecoilValue(isDarkAtom);
+    const setDarkAtom = useSetRecoilState(isDarkAtom);
     const themeToggleHandler = () => {
-        setDarkTheme((prev) => !prev);
+        setDarkAtom((prev) => !prev);
     };
 
     return (
         <>
-            <ThemeProvider theme={isDarkTheme ? darkTheme : lightTheme}>
+            <ThemeProvider theme={isDark ? darkTheme : lightTheme}>
                 <ThemeToggleBtn onClick={themeToggleHandler}>
-                    {isDarkTheme ? "Light Mode" : "Dark Mode"}
+                    {isDark ? "Light Mode" : "Dark Mode"}
                 </ThemeToggleBtn>
                 <GlobalStyle />
                 <Router />

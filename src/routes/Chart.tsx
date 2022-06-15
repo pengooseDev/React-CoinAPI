@@ -3,6 +3,8 @@ import { fetchCoinHistory } from "../api";
 import ApexChart from "react-apexcharts";
 import React from "react";
 import styled from "styled-components";
+import { useRecoilValue } from "recoil";
+import { isDarkAtom } from "atoms";
 
 //Param에 담겨있는, coinId
 //DataFetch
@@ -36,6 +38,8 @@ const Chart = ({ coinId }: ChartProps) => {
         { refetchInterval: 4000 }
     );
 
+    const isDark = useRecoilValue(isDarkAtom);
+
     return (
         <>
             <ChartTitle>Chart</ChartTitle>
@@ -63,6 +67,9 @@ const Chart = ({ coinId }: ChartProps) => {
                         },
                     ]}
                     options={{
+                        theme: {
+                            mode: isDark ? "dark" : "light",
+                        },
                         chart: {
                             toolbar: { show: false },
                             height: 500,
