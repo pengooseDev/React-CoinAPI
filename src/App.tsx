@@ -4,7 +4,6 @@ import Router from "./Router";
 import { ReactQueryDevtools } from "react-query/devtools";
 import { ThemeProvider } from "styled-components";
 import { darkTheme, lightTheme } from "theme";
-import React from "react";
 import styled from "styled-components";
 import { isDarkAtom } from "./atoms";
 import { useRecoilValue, useSetRecoilState } from "recoil";
