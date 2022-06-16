@@ -25,6 +25,8 @@ interface IHistorical {
 }
 
 const ChartTitle = styled.div`
+    background: rgb(255, 228, 196);
+
     margin-top: 15px;
     font-size: 25px;
     font-weight: 600;
