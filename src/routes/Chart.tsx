@@ -25,8 +25,7 @@ interface IHistorical {
 }
 
 const ChartTitle = styled.div`
-    background: rgb(255, 228, 196);
-
+    margin-bottom: 15px;
     margin-top: 15px;
     font-size: 25px;
     font-weight: 600;
@@ -70,7 +69,7 @@ const Chart = ({ coinId }: ChartProps) => {
                     ]}
                     options={{
                         theme: {
-                            mode: isDark ? "dark" : "light",
+                            mode: "light", //isDark ? "dark" : "light",
                         },
                         chart: {
                             toolbar: { show: false },
