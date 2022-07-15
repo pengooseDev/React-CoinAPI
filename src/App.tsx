@@ -1,7 +1,5 @@
 import { createGlobalStyle } from "styled-components";
 import Router from "./Router";
-//React Query의 데이터를 보기위해선 devtools버젼으로 Import후 라우터 아래 컴포넌트 넣어주기.
-import { ReactQueryDevtools } from "react-query/devtools";
 import { ThemeProvider } from "styled-components";
 import { darkTheme, lightTheme } from "theme";
 import styled from "styled-components";
@@ -127,7 +125,6 @@ const App = () => {
                 </ThemeToggleBtn>
                 <GlobalStyle />
                 <Router />
-                <ReactQueryDevtools initialIsOpen={true} />
             </ThemeProvider>
         </>
     );
