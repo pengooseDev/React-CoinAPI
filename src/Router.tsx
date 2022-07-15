@@ -8,7 +8,7 @@ interface IRouterProps {
 
 const Router = () => {
     return (
-        <BrowserRouter>
+        <BrowserRouter basename="coin-test">
             <Routes>
                 <Route path="/" element={<Coins />} />
                 <Route path="/:coinId/*" element={<Coin />} />
